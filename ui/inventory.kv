@@ -1,0 +1,110 @@
+<InventoryScreen>:
+    name: "inventory"
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(10)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+
+            Button:
+                text: "Ajouter un article"
+                on_release: root.ouvrir_popup_ajout()
+
+        RecycleView:
+            id: inventaire_rv
+            viewclass: 'ProduitRow'
+            scroll_type: ['bars', 'content']
+            bar_width: dp(10)
+
+            RecycleBoxLayout:
+                orientation: 'vertical'
+                spacing: dp(10)
+                padding: dp(10)
+                default_size: None, dp(80)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+
+<ProduitRow@BoxLayout>:
+    orientation: 'horizontal'
+    spacing: dp(10)
+    padding: dp(10)
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.95, 0.95, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [8]
+
+    Label:
+        text: root.nom
+        font_size: '16sp'
+        color: 0, 0, 0, 1
+
+    Label:
+        text: f"{root.quantite} en stock"
+        font_size: '16sp'
+        color: 0, 0, 0, 1
+        size_hint_x: 0.3
+
+    Button:
+        text: "Modifier"
+        size_hint_x: 0.25
+        on_release: root.modifier()
+
+    Button:
+        text: "Supprimer"
+        size_hint_x: 0.25
+        on_release: root.supprimer()
+
+<PopupAjoutProduit@Popup>:
+    title: "Ajouter un article"
+    size_hint: 0.9, 0.9
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: dp(20)
+
+        TextInput:
+            id: nom_input
+            hint_text: "Nom du produit"
+
+        TextInput:
+            id: categorie_input
+            hint_text: "Catégorie"
+
+        TextInput:
+            id: quantite_input
+            hint_text: "Quantité"
+            input_filter: 'int'
+
+        TextInput:
+            id: prix_achat_input
+            hint_text: "Prix d'achat"
+            input_filter: 'float'
+
+        TextInput:
+            id: prix_vente_input
+            hint_text: "Prix de vente"
+            input_filter: 'float'
+
+        BoxLayout:
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(40)
+
+            Button:
+                text: "Annuler"
+                on_release: root.dismiss()
+
+            Button:
+                text: "Ajouter"
+                on_release: root.valider_ajout()

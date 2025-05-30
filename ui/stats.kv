@@ -1,0 +1,102 @@
+<StatsScreen>:
+    name: "stats"
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(15)
+
+        Label:
+            text: "Statistiques de ventes"
+            font_size: '20sp'
+            bold: True
+            size_hint_y: None
+            height: dp(40)
+            halign: 'left'
+            valign: 'middle'
+            text_size: self.size
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+
+            Spinner:
+                id: periode_spinner
+                text: "Hebdomadaire"
+                values: ["Hebdomadaire", "Mensuel"]
+                size_hint_x: 0.5
+                on_text: root.changer_periode(self.text)
+
+            Button:
+                text: "Actualiser"
+                size_hint_x: 0.5
+                on_release: root.actualiser_stats()
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: dp(10)
+
+            Label:
+                text: "Évolution des ventes"
+                font_size: '16sp'
+                size_hint_y: None
+                height: dp(30)
+                color: 0.1, 0.1, 0.1, 1
+
+            Widget:
+                id: graph_ventes
+                size_hint_y: 0.4
+                canvas.before:
+                    Color:
+                        rgba: .95, .95, .95, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10]
+
+            Label:
+                text: "Produits les plus vendus"
+                font_size: '16sp'
+                size_hint_y: None
+                height: dp(30)
+                color: 0.1, 0.1, 0.1, 1
+
+            RecycleView:
+                id: produits_rv
+                viewclass: 'ProduitStatRow'
+                bar_width: dp(8)
+
+                RecycleBoxLayout:
+                    orientation: 'vertical'
+                    default_size: None, dp(60)
+                    default_size_hint: 1, None
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(5)
+
+<ProduitStatRow@BoxLayout>:
+    orientation: 'horizontal'
+    padding: dp(10)
+    spacing: dp(10)
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.95, 0.95, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [6]
+
+    Label:
+        text: root.nom
+        font_size: '15sp'
+        color: 0, 0, 0, 1
+
+    Label:
+        text: f"{root.total_vendu} unités"
+        font_size: '15sp'
+        color: 0, 0, 0, 1
+        size_hint_x: 0.4
+        halign: 'right'
+        text_size: self.size

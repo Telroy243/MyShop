@@ -1,0 +1,99 @@
+<HomeScreen>:
+    name: "home"
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(20)
+
+        Label:
+            text: "Résumé"
+            font_size: '24sp'
+            bold: True
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        GridLayout:
+            cols: 2
+            spacing: dp(10)
+            size_hint_y: None
+            height: self.minimum_height
+
+            BoxLayout:
+                orientation: 'vertical'
+                padding: dp(10)
+                canvas.before:
+                    Color:
+                        rgba: 0.2, 0.6, 0.8, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10]
+                Label:
+                    text: "Articles"
+                    font_size: '16sp'
+                    color: 1,1,1,1
+                Label:
+                    text: str(root.total_articles)
+                    font_size: '20sp'
+                    bold: True
+                    color: 1,1,1,1
+
+            BoxLayout:
+                orientation: 'vertical'
+                padding: dp(10)
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.7, 0.2, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10]
+                Label:
+                    text: "Revenu estimé"
+                    font_size: '16sp'
+                    color: 1,1,1,1
+                Label:
+                    text: f"{root.revenu_total:.2f} FC"
+                    font_size: '20sp'
+                    bold: True
+                    color: 1,1,1,1
+
+        Label:
+            text: "Top Produits"
+            font_size: '20sp'
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        RecycleView:
+            id: produits_rv
+            viewclass: 'ProduitItem'
+            size_hint_y: 1
+            RecycleBoxLayout:
+                orientation: 'vertical'
+                spacing: dp(10)
+                default_size: None, dp(50)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+
+<ProduitItem@BoxLayout>:
+    orientation: 'horizontal'
+    spacing: dp(10)
+    padding: dp(10)
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.95, 0.95, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [8]
+    Label:
+        text: root.nom
+        font_size: '16sp'
+        color: 0,0,0,1
+    Label:
+        text: f"{root.quantite} vendus"
+        font_size: '16sp'
+        color: 0.1, 0.1, 0.1, 1
+        halign: 'right'
