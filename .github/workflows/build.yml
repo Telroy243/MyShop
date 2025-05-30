@@ -1,0 +1,61 @@
+name: Build MyShop APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Cloner le dépôt
+      uses: actions/checkout@v3
+
+    - name: Installer les dépendances système
+      run: |
+        sudo apt update
+        sudo apt install -y \
+          build-essential \
+          ccache \
+          git \
+          zip \
+          unzip \
+          openjdk-17-jdk \
+          python3-pip \
+          python3-setuptools \
+          libncurses5 \
+          libstdc++6 \
+          zlib1g-dev \
+          libffi-dev \
+          libssl-dev \
+          libsqlite3-dev \
+          libjpeg-dev \
+          libfreetype6-dev \
+          liblcms2-dev \
+          libblas-dev \
+          liblapack-dev
+
+    - name: Installer Buildozer
+      run: |
+        pip install --upgrade pip
+        pip install cython
+        pip install buildozer
+
+    - name: Initialiser Buildozer (si nécessaire)
+      run: |
+        if [ ! -f buildozer.spec ]; then
+          buildozer init
+        fi
+
+    - name: Construire l’APK (debug)
+      run: |
+        buildozer android debug
+
+    - name: Télécharger l’APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: MyShop-APK
+        path: bin/*.apk
